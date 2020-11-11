@@ -22,7 +22,7 @@ def scrape():
    mars = mongo.db.mars  # assign a new variable that points to our Mongo database
    mars_data = scraping.scrape_all()   #In this line, we're referencing the scrape_all function in the scraping.py
    mars.update({}, mars_data, upsert=True) # update the database
-   return "Scraping Successful!"
+   return render_template("return.html")
 
 if __name__ == "__main__":
-   app.run()
+   app.run(debug=True)
