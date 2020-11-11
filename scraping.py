@@ -21,7 +21,7 @@ def scrape_all():
         "facts": mars_facts(),
         "last_modified": dt.datetime.now(),
         "mars_hemi": mars_hemis(browser),
-        "weather": mars_weather(browser)
+        #"weather": mars_weather(browser)
     }
 
     # Stop webdriver and return data
@@ -119,7 +119,7 @@ def mars_hemis(browser):
     # find the container that holds each individual link
     hemi_child = hemi_parent.find_all('a')
     #loop through all the results and do a bunch of stuff:
-    for item in hemi_child:
+    for item in hemi_child[::2]:
         #grab the relative link to the fullsize image
         link = item.get('href')
         # make the full url 
@@ -138,22 +138,22 @@ def mars_hemis(browser):
         # append the url list with a dictionary containing the title and image url
         hemisphere_image_urls.append({"img_title" : img_title, "img_url" : hemi_img_url})
     # each child container had 2 identicle links, drop the dupes
-    hemisphere_image_urls = [i for n, i in enumerate(hemisphere_image_urls) if i not in hemisphere_image_urls[n + 1:]] 
+    #hemisphere_image_urls = [i for n, i in enumerate(hemisphere_image_urls) if i not in hemisphere_image_urls[n + 1:]] 
     # 4. return the list that holds the dictionary of each image url and title.
     return hemisphere_image_urls
 
-def mars_weather(browser):
-    # Visit the weather website
-    url = 'https://mars.nasa.gov/insight/weather/'
-    browser.visit(url)
+# def mars_weather(browser):
+#     # Visit the weather website
+#     url = 'https://mars.nasa.gov/insight/weather/'
+#     browser.visit(url)
 
-    # Parse the data
-    html = browser.html
-    weather_soup = soup(html, 'html.parser')
+#     # Parse the data
+#     html = browser.html
+#     weather_soup = soup(html, 'html.parser')
 
-    # Scrape the Daily Weather Report table
-    weather_table = weather_soup.find('pre', class_='embed_code').text
-    return weather_table
+#     # Scrape the Daily Weather Report table
+#     weather_table = weather_soup.find('pre', class_='embed_code').text
+#     return weather_table
 
 if __name__ == "__main__":
     # If running as script, print scraped data
